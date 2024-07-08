@@ -7,6 +7,7 @@ echo 'Moonlark Maintainer for Linux (MTL) is launching ...'
 # 检查权限
 if ![ "$EUID" -eq 0 ]; then
   echo 请以 ROOT 权限执行此脚本
+  exit 1
 fi
 
 
