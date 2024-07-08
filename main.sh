@@ -2,6 +2,7 @@
 
 set -e
 echo 'Moonlark Maintainer for Linux (MTL) is launching ...'
+alias poetry=$MTL_POETRY_PATH
 
 
 # 检查权限
@@ -53,6 +54,7 @@ cp -r /home/$MTL_MOONLARK_USER/.local/share/nonebot2 $MTL_CACHE_DIRECTORY/data
 echo ">== 当前步骤: 更新 ==<"
 git pull
 NEW_COMMIT=$(git rev-parse --short HEAD)
+poetry install
 echo Moonlark 当前版本 $NEW_COMMIT
 poetry run nb orm upgrade
 
