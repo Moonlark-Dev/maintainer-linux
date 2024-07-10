@@ -46,9 +46,10 @@ echo ">== 当前步骤: 备份 ==<"
 cp -r $MTL_MOONLARK_PATH/$MTL_DATABASE_NAME.db database.db
 cp -r /home/$MTL_MOONLARK_USER/.config/nonebot2 $MTL_CACHE_DIRECTORY/config
 cp -r /home/$MTL_MOONLARK_USER/.local/share/nonebot2 $MTL_CACHE_DIRECTORY/data
+chown -R $MTL_MOONLARK_USER $MTL_CACHE_DIRECTORY
 echo ">== 当前步骤: 更新 ==<"
-git pull
-NEW_COMMIT=$(git rev-parse --short HEAD)
+sudo -u $MTL_MOONLARK_USER git pull
+NEW_COMMIT=$(sudo -u $MTL_MOONLARK_USER git rev-parse --short HEAD)
 sudo -u $MTL_MOONLARK_USER poetry install
 echo Moonlark 当前版本 $NEW_COMMIT
 sudo -u $MTL_MOONLARK_USER poetry run nb orm upgrade
@@ -59,17 +60,17 @@ systemctl start "$MTL_MOONLARK_SERVICE"
 # 打包
 cd /tmp
 rm -rf $MTL_BACKUP_PATH/database* $MTL_BACKUP_PATH/config $MTL_BACKUP_PATH/data || true
-cp -r $MTL_CACHE_DIRECTORY/* $MTL_BACKUP_PATH
+sudo -u $MTL_MOONLARK_USER cp -r $MTL_CACHE_DIRECTORY/* $MTL_BACKUP_PATH
 rm -rf $MTL_BACKUP_NAME
 
 
 # 上传
 cd $MTL_BACKUP_PATH
-zip -s 100m -r database.zip database.db
+sudo -u $MTL_MOONLARK_USER zip -s 100m -r database.zip database.db
 rm database.db
-git add -A
-git commit -m $(date +%Y%m%d%H%M%S)
-git push
+sudo -u $MTL_MOONLARK_USER git add -A
+sudo -u $MTL_MOONLARK_USER git commit -m $(date +%Y%m%d%H%M%S)
+sudo -u $MTL_MOONLARK_USER git push
 
 
 # 结束
