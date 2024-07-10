@@ -49,9 +49,9 @@ cp -r /home/$MTL_MOONLARK_USER/.local/share/nonebot2 $MTL_CACHE_DIRECTORY/data
 echo ">== 当前步骤: 更新 ==<"
 git pull
 NEW_COMMIT=$(git rev-parse --short HEAD)
-poetry install
+sudo -u $MTL_MOONLARK_USER poetry install
 echo Moonlark 当前版本 $NEW_COMMIT
-poetry run nb orm upgrade
+sudo -u $MTL_MOONLARK_USER poetry run nb orm upgrade
 echo ">== 当前步骤: 启动 ==<"
 systemctl start "$MTL_MOONLARK_SERVICE"
 
