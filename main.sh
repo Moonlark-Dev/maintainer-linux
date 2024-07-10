@@ -6,7 +6,7 @@ alias poetry=$MTL_POETRY_PATH
 
 
 # 检查权限
-if ![ "$EUID" -eq 0 ]; then
+if ! [ "$EUID" -eq 0 ]; then
   echo 请以 ROOT 权限执行此脚本
   exit 1
 fi
@@ -23,7 +23,7 @@ fi
 
 
 # 检查路径
-if ![ -z "$MTL_MOONLARK_PATH" ] && ![ -f "$MTL_MOONLARK_PATH" ]; then
+if ! [ -z "$MTL_MOONLARK_PATH" ] && ! [ -f "$MTL_MOONLARK_PATH" ]; then
     echo 错误：MTL_MOONLARK_PATH 未定义或不存在。
     exit 1
 fi
