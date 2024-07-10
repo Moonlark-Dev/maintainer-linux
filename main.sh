@@ -42,34 +42,31 @@ echo Moonlark 当前版本 $OLD_COMMIT
 # 备份与更新
 echo ">== 当前步骤: 停止 ==<"
 systemctl stop "$MTL_MOONLARK_SERVICE"
-
 echo ">== 当前步骤: 备份 ==<"
-if [ -z "$MTL_BACKUP_DATABASE" ] || [ "$MTL_BACKUP_DATABASE" == 1 ]; then
-    mysqldump -u "$MTL_MYSQL_USER" -p"$MTL_MYSQL_PASSWORD" "$MTL_DATABASE_NAME" > $MTL_CACHE_DIRECTORY/database.sql
-    echo 已将 $MTL_DATABASE_NAME 数据库备份到 $MTL_CACHE_DIRECTORY/database.sql
-fi
+cp -r $MTL_MOONLARK_PATH/$MTL_DATABASE_NAME.db database.db
 cp -r /home/$MTL_MOONLARK_USER/.config/nonebot2 $MTL_CACHE_DIRECTORY/config
 cp -r /home/$MTL_MOONLARK_USER/.local/share/nonebot2 $MTL_CACHE_DIRECTORY/data
-
 echo ">== 当前步骤: 更新 ==<"
 git pull
 NEW_COMMIT=$(git rev-parse --short HEAD)
 poetry install
 echo Moonlark 当前版本 $NEW_COMMIT
 poetry run nb orm upgrade
-
 echo ">== 当前步骤: 启动 ==<"
 systemctl start "$MTL_MOONLARK_SERVICE"
 
 
 # 打包
 cd /tmp
+rm -rf $MTL_BACKUP_PATH/database* $MTL_BACKUP_PATH/config $MTL_BACKUP_PATH/data || true
 cp -r $MTL_CACHE_DIRECTORY/* $MTL_BACKUP_PATH
 rm -rf $MTL_BACKUP_NAME
 
 
 # 上传
 cd $MTL_BACKUP_PATH
+zip -s 100m -r database.zip database.db
+rm database.db
 git add -A
 git commit -m $(date +%Y%m%d%H%M%S)
 git push
