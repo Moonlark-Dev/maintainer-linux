@@ -64,6 +64,8 @@ rm -rf $MTL_BACKUP_NAME
 
 # 上传
 cd $MTL_BACKUP_PATH
+zip -s 100m -r database.zip database.db
+rm database.db
 git add -A
 git commit -m $(date +%Y%m%d%H%M%S)
 git push
