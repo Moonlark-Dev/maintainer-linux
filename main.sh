@@ -35,7 +35,7 @@ MTL_CACHE_DIRECTORY=/tmp/$MTL_BACKUP_NAME
 echo 将在 $MTL_CACHE_DIRECTORY 建立缓存文件夹
 mkdir -p $MTL_CACHE_DIRECTORY
 cd $MTL_MOONLARK_PATH
-OLD_COMMIT=$(git rev-parse --short HEAD)
+OLD_COMMIT=$(sudo -u $MTL_MOONLARK_USER git rev-parse --short HEAD)
 echo Moonlark 当前版本 $OLD_COMMIT
 
 
