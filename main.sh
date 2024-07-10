@@ -23,7 +23,7 @@ fi
 
 
 # 检查路径
-if ! [ -z "$MTL_MOONLARK_PATH" ] && ! [ -f "$MTL_MOONLARK_PATH" ]; then
+if ! [ -z "$MTL_MOONLARK_PATH" ] && ! [ -f "$MTL_MOONLARK_PATH/pyproject.toml" ]; then
     echo 错误：MTL_MOONLARK_PATH 未定义或不存在。
     exit 1
 fi
