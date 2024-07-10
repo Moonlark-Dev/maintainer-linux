@@ -58,6 +58,7 @@ systemctl start "$MTL_MOONLARK_SERVICE"
 
 # 打包
 cd /tmp
+rm -rf $MTL_BACKUP_PATH/database* $MTL_BACKUP_PATH/config $MTL_BACKUP_PATH/data || true
 cp -r $MTL_CACHE_DIRECTORY/* $MTL_BACKUP_PATH
 rm -rf $MTL_BACKUP_NAME
 
