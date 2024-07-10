@@ -43,7 +43,7 @@ echo Moonlark 当前版本 $OLD_COMMIT
 echo ">== 当前步骤: 停止 ==<"
 systemctl stop "$MTL_MOONLARK_SERVICE"
 echo ">== 当前步骤: 备份 ==<"
-cp -r $MTL_MOONLARK_PATH/$MTL_DATABASE_NAME.db database.db
+cp -r $MTL_MOONLARK_PATH/$MTL_DATABASE_NAME.db $MTL_CACHE_DIRECTORY/database.db
 cp -r /home/$MTL_MOONLARK_USER/.config/nonebot2 $MTL_CACHE_DIRECTORY/config
 cp -r /home/$MTL_MOONLARK_USER/.local/share/nonebot2 $MTL_CACHE_DIRECTORY/data
 chown -R $MTL_MOONLARK_USER $MTL_CACHE_DIRECTORY
