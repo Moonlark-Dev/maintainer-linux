@@ -50,9 +50,9 @@ chown -R $MTL_MOONLARK_USER $MTL_CACHE_DIRECTORY
 echo ">== 当前步骤: 更新 ==<"
 sudo -u $MTL_MOONLARK_USER git pull
 NEW_COMMIT=$(sudo -u $MTL_MOONLARK_USER git rev-parse --short HEAD)
-sudo -u $MTL_MOONLARK_USER poetry install
+sudo -u $MTL_MOONLARK_USER $MTL_POETRY_PATH install
 echo Moonlark 当前版本 $NEW_COMMIT
-sudo -u $MTL_MOONLARK_USER poetry run nb orm upgrade
+sudo -u $MTL_MOONLARK_USER $MTL_POETRY_PATH run nb orm upgrade
 echo ">== 当前步骤: 启动 ==<"
 systemctl start "$MTL_MOONLARK_SERVICE"
 
