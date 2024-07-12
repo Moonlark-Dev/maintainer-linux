@@ -59,19 +59,21 @@ systemctl start "$MTL_MOONLARK_SERVICE"
 
 # 打包
 cd /tmp
-rm -rf $MTL_BACKUP_PATH/database* $MTL_BACKUP_PATH/config $MTL_BACKUP_PATH/data || true
-sudo -u $MTL_MOONLARK_USER cp -r $MTL_CACHE_DIRECTORY/* $MTL_BACKUP_PATH
-rm -rf $MTL_BACKUP_NAME
-
+git clone --depth=1 $MTL_BACKUP_REPO mtl_backup
+cd /tmp/mtl_backup
+rm -rf ./database* ./onfig ./data || true
+cp -r $MTL_CACHE_DIRECTORY/* $MTL_BACKUP_PATH
+rm -rf /tmp/$MTL_BACKUP_NAME
 
 # 上传
 cd $MTL_BACKUP_PATH
-sudo -u $MTL_MOONLARK_USER zip -s 100m -r database.zip database.db
+zip -s 50m -r database.zip database.db
 rm database.db
-sudo -u $MTL_MOONLARK_USER git add -A
-sudo -u $MTL_MOONLARK_USER git commit -m $(date +%Y%m%d%H%M%S)
-sudo -u $MTL_MOONLARK_USER git push
+git add -A
+git commit -m $(date +%Y%m%d%H%M%S)
+git push
 
 
 # 结束
+rm -rf /tmp/mtl_backup
 echo "Moonlark 维护已完成"
