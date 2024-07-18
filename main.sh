@@ -43,7 +43,7 @@ echo Moonlark 当前版本 $OLD_COMMIT
 echo ">== 当前步骤: 停止 ==<"
 systemctl stop "$MTL_MOONLARK_SERVICE"
 echo ">== 当前步骤: 备份 ==<"
-cp $MTL_MOONLARK_PATH/$MTL_DATABASE_NAME.db $MTL_CACHE_DIRECTORY/database.db
+mysqldump -u $MTL_DB_USER -p$MTL_DB_PASSWORD $MTL_DATABASE > $MTL_CACHE_DIRECTORY/database.sql
 cp -r /home/$MTL_MOONLARK_USER/.config/nonebot2 $MTL_CACHE_DIRECTORY/config
 cp -r /home/$MTL_MOONLARK_USER/.local/share/nonebot2 $MTL_CACHE_DIRECTORY/data
 chown -R $MTL_MOONLARK_USER $MTL_CACHE_DIRECTORY
@@ -59,19 +59,19 @@ systemctl start "$MTL_MOONLARK_SERVICE"
 
 # 打包
 cd /tmp
-git clone --depth=1 $MTL_BACKUP_REPO mtl_backup
+git clone --depth=1 $MTL_BACKUP_REPO mtl_backup || true
 cd /tmp/mtl_backup
 rm -rf ./database* ./onfig ./data || true
-cp -r $MTL_CACHE_DIRECTORY/* $MTL_BACKUP_PATH
+cp -r $MTL_CACHE_DIRECTORY/* /tmp/mtl_backup
 rm -rf /tmp/$MTL_BACKUP_NAME
 
 # 上传
-cd $MTL_BACKUP_PATH
-zip -s 50m -r database.zip database.db
-rm database.db
+cd /tmp/mtl_backup
+zip -s 50m -r database.zip database.sql
+rm database.sql
 git add -A
 git commit -m $(date +%Y%m%d%H%M%S)
-git push
+git push --force
 
 
 # 结束
